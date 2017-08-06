@@ -46,6 +46,7 @@
     const DEFAULT_FORMATS = {
         date: 'yyyy-MM-dd',
         month: 'yyyy-MM',
+        monthrange: 'yyyy-MM',
         year: 'yyyy',
         datetime: 'yyyy-MM-dd HH:mm:ss',
         time: 'HH:mm:ss',
@@ -104,6 +105,10 @@
             parser: DATE_PARSER
         },
         daterange: {
+            formatter: RANGE_FORMATTER,
+            parser: RANGE_PARSER
+        },
+        monthrange: {
             formatter: RANGE_FORMATTER,
             parser: RANGE_PARSER
         },
@@ -296,7 +301,7 @@
                 const type = this.type;
                 const format = this.format || DEFAULT_FORMATS[type];
 
-                if (type === 'daterange' || type === 'timerange' || type === 'datetimerange') {
+                if (type === 'daterange' || type === 'timerange' || type === 'datetimerange' || type === 'monthrange') {
                     const parser = (
                         TYPE_VALUE_RESOLVER_MAP[type] ||
                         TYPE_VALUE_RESOLVER_MAP['default']
@@ -459,7 +464,7 @@
                 ).formatter;
 
                 let newDate = formatter(date, format);
-                if (type === 'daterange' || type === 'timerange') {
+                if (type === 'daterange' || type === 'timerange' || type === 'monthrange') {
                     newDate = [newDate.split(RANGE_SEPARATOR)[0], newDate.split(RANGE_SEPARATOR)[1]];
                 }
                 return newDate;

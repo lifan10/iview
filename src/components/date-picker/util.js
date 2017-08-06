@@ -83,3 +83,12 @@ export const initTimeDate = function () {
     date.setSeconds(0);
     return date;
 };
+
+export const initMonthDate = function () {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    date.setYear(year);
+    date.setMonth(month);
+    return date;
+};

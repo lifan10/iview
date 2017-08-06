@@ -28,6 +28,7 @@
                 ];
             },
             cells () {
+                alert('cells');
                 let cells = [];
                 const cell_tmpl = {
                     text: '',
@@ -52,6 +53,7 @@
         },
         methods: {
             getCellCls (cell) {
+                alert('getCells');
                 return [
                     `${prefixCls}-cell`,
                     {
@@ -62,6 +64,7 @@
             },
             handleClick (event) {
                 const target = event.target;
+                console.log(target.tagName);
                 if (target.tagName === 'EM') {
                     const index = parseInt(event.target.getAttribute('index'));
                     const cell = this.cells[index];
