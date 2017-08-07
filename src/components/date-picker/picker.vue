@@ -1,5 +1,6 @@
 <template>
     <div :class="[prefixCls]" v-clickoutside="handleClose">
+        <!--Input输入框-->
         <div ref="reference" :class="[prefixCls + '-rel']">
             <slot>
                 <i-input
@@ -17,6 +18,7 @@
                     :icon="iconType"></i-input>
             </slot>
         </div>
+        <!--日历面板-->
         <transition :name="transition">
             <Drop
                 @click.native="handleTransferClick"
@@ -278,7 +280,9 @@
             handleTransferClick () {
                 if (this.transfer) this.disableCloseUnderTransfer = true;
             },
+            //点击日历外围时触发关闭面板操作
             handleClose () {
+                console.log('picker.vue:handleClose');
                 if (this.disableCloseUnderTransfer) {
                     this.disableCloseUnderTransfer = false;
                     return false;
@@ -286,9 +290,11 @@
                 if (this.open !== null) return;
 //                if (!this.disableClickOutSide) this.visible = false;
                 this.visible = false;
+//                console.log('picker.vue:'+this.visible);
                 this.disableClickOutSide = false;
             },
             handleFocus () {
+                console.log('picker.vue:handleFocus');
                 if (this.readonly) return;
                 this.visible = true;
             },

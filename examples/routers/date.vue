@@ -1,7 +1,7 @@
 <template>
     <div>
         <Date-picker transfer type="monthrange" placeholder="选择日期" style="width: 200px"></Date-picker>
-        <Date-picker type="daterange" placeholder="选择日期" style="width: 200px"></Date-picker>
+        <Date-picker type="month" placeholder="选择日期" style="width: 200px"></Date-picker>
         <Date-picker type="daterange" placeholder="选择日期" style="width: 200px"></Date-picker>
     </div>
 </template>

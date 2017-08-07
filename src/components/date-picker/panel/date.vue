@@ -244,6 +244,7 @@
                 this.resetDate();
             },
             handleMonthPick (month) {
+                console.log('date.vue:handleMonthPick');
                 this.month = month;
                 const selectionMode = this.selectionMode;
                 if (selectionMode !== 'month') {
@@ -255,6 +256,7 @@
                     this.year && this.date.setFullYear(this.year);
                     this.resetDate();
                     const value = new Date(this.date.getFullYear(), month, 1);
+                    console.log(value);
                     this.$emit('on-pick', value);
                 }
             },

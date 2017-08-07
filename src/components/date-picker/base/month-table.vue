@@ -48,6 +48,7 @@
                 }
 
                 return cells;
+                console.log(cells);
             }
         },
         methods: {
@@ -62,9 +63,11 @@
             },
             handleClick (event) {
                 const target = event.target;
-                console.log(target.tagName);
+                console.log('month-table.vue:handleClick');
                 if (target.tagName === 'EM') {
                     const index = parseInt(event.target.getAttribute('index'));
+                    console.log(index);//0,1,2,3,4,5...
+                    console.log(this.cells);//0,1,2,3,4,5...
                     const cell = this.cells[index];
                     if (cell.disabled) return;
 
