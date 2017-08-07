@@ -28,7 +28,6 @@
                 ];
             },
             cells () {
-                alert('cells');
                 let cells = [];
                 const cell_tmpl = {
                     text: '',
@@ -53,7 +52,6 @@
         },
         methods: {
             getCellCls (cell) {
-                alert('getCells');
                 return [
                     `${prefixCls}-cell`,
                     {
