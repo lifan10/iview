@@ -111,6 +111,7 @@
                     ref="rightMonthTable"
                     v-show="leftCurrentView === 'month'"
                     :year="rightYear"
+                    :month="rightMonth"
                     :date="rightDate"
                     :min-date="minDate"
                     :max-date="maxDate"
@@ -246,24 +247,24 @@
                 }
             },
             rightMonth () {
-//                return this.rightDate.getMonth();
+                return this.rightDate.getMonth();
             },
             rightMonthLabel () {
                 const month = this.rightMonth + 1;
                 return this.t(`i.datepicker.month${month}`);
             },
             rightDate () {
-//                const newDate = new Date(this.date);
-//                const month = newDate.getMonth();
-//                newDate.setDate(1);
-//
-//                if (month === 11) {
-//                    newDate.setFullYear(newDate.getFullYear() + 1);
-//                    newDate.setMonth(0);
-//                } else {
-//                    newDate.setMonth(month + 1);
-//                }
-//                return newDate;
+                const newDate = new Date(this.date);
+                const month = newDate.getMonth();
+                newDate.setDate(1);
+
+                if (month === 11) {
+                    newDate.setFullYear(newDate.getFullYear() + 1);
+                    newDate.setMonth(0);
+                } else {
+                    newDate.setMonth(month + 1);
+                }
+                return newDate;
             },
             timeDisabled () {
                 return !(this.minDate && this.maxDate);
