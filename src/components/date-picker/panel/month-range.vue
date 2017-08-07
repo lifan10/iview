@@ -143,7 +143,7 @@
     import Icon from '../../icon/icon.vue';
     import DateTable from '../base/date-table.vue';
     import YearTable from '../base/year-table.vue';
-    import MonthTable from '../base/month-table.vue';
+    import MonthTable from '../base/monthrange-table.vue';
     import TimePicker from './time-range.vue';
     import Confirm from '../base/confirm.vue';
     import { toDate, prevMonth, nextMonth, initTimeDate ,initMonthDate } from '../util';
@@ -165,8 +165,8 @@
                 shortcuts: [],
                 date: initMonthDate(),
                 value: '',
-                minDate: '',
-                maxDate: '',
+                minDate: initMonthDate(),
+                maxDate: initMonthDate(),
                 confirm: false,
                 rangeState: {
                     endDate: null,
@@ -299,7 +299,7 @@
             resetDate () {
                 this.date = new Date(this.date);
                 this.leftTableYear = this.date.getFullYear();
-                this.rightTableYear = this.rightDate.getFullYear();
+//                this.rightTableYear = this.rightDate.getFullYear();
             },
             handleClear() {
                 this.minDate = null;
@@ -363,25 +363,23 @@
                 console.log('handleLeftMonthPick');
                 this.handleMonthPick(month, 'left');
             },
-            handleRightMonthPick (month) {
+            handleRightMonthPick (month)                           {
                 this.handleMonthPick(month, 'right');
             },
             handleMonthPick (month, direction) {
                 console.log('handleMonthPick');
                 let year = this[`${direction}TableYear`];
-                if (direction === 'right') {
-                    if (month === 0) {
-                        month = 11;
-                        year--;
-                    } else {
-                        month--;
-                    }
+                if(direction=='left'){
+                    this.minDate.setYear(year);
+                    this.date.setYear(year);
+                    this.minDate.setMonth(month);
+                }else{
+                    this.maxDate.setYear(year);
+                    this.maxDate.setMonth(month);
                 }
 
-                this.date.setYear(year);
-//                this.date.setMonth(month);
-                this[`${direction}CurrentView`] = 'month';
-                this.resetDate();
+//                this[`${direction}CurrentView`] = 'month';
+//                this.resetDate();
             },
             showYearPicker (direction) {
                 this[`${direction}CurrentView`] = 'year';

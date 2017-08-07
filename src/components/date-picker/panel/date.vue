@@ -261,6 +261,7 @@
                 }
             },
             handleDatePick (value) {
+                console.log('handleDatePick');
                 if (this.selectionMode === 'day') {
                     this.$emit('on-pick', new Date(value.getTime()));
                     this.date.setFullYear(value.getFullYear());
