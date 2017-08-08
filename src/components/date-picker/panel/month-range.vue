@@ -61,7 +61,8 @@
                     :range-state="rangeState"
                     selection-mode="range"
                     :disabled-date="disabledDate"
-                    @on-pick="handleLeftMonthPick"
+                    @on-changerange="handleChangeRange"
+                    @on-pick="handleRangePick"
                     @on-pick-click="handlePickClick"></month-table>
             </div>
             <div :class="[prefixCls + '-content', prefixCls + '-content-right']" v-show="!isTime">
@@ -118,7 +119,8 @@
                     :range-state="rangeState"
                     selection-mode="range"
                     :disabled-date="disabledDate"
-                    @on-pick="handleRightMonthPick"
+                    @on-changerange="handleChangeRange"
+                    @on-pick="handleRangePick"
                     @on-pick-click="handlePickClick"></month-table>
             </div>
             <div :class="[prefixCls + '-content']" v-show="isTime">
@@ -165,8 +167,8 @@
                 shortcuts: [],
                 date: initMonthDate(),
                 value: '',
-                minDate: initMonthDate(),
-                maxDate: initMonthDate(),
+                minDate: '',
+                maxDate: '',
                 confirm: false,
                 rangeState: {
                     endDate: null,
@@ -363,23 +365,26 @@
                 console.log('handleLeftMonthPick');
                 this.handleMonthPick(month, 'left');
             },
-            handleRightMonthPick (month)                           {
+            handleRightMonthPick (month){
                 this.handleMonthPick(month, 'right');
             },
             handleMonthPick (month, direction) {
                 console.log('handleMonthPick');
+                console.log(month);
                 let year = this[`${direction}TableYear`];
-                if(direction=='left'){
-                    this.minDate.setYear(year);
-                    this.date.setYear(year);
-                    this.minDate.setMonth(month);
-                }else{
-                    this.maxDate.setYear(year);
-                    this.maxDate.setMonth(month);
+                if (direction === 'right') {
+                    if (month === 0) {
+                        month = 11;
+                        year--;
+                    } else {
+                        month--;
+                    }
                 }
 
-//                this[`${direction}CurrentView`] = 'month';
-//                this.resetDate();
+                this.date.setYear(year);
+                this.date.setMonth(month);
+                this[`${direction}CurrentView`] = 'date';
+                this.resetDate();
             },
             showYearPicker (direction) {
                 this[`${direction}CurrentView`] = 'year';
@@ -391,6 +396,7 @@
             handleConfirm(visible) {
                 this.$emit('on-pick', [this.minDate, this.maxDate], visible);
             },
+            //on-pick
             handleRangePick (val, close = true) {
                 if (this.maxDate === val.maxDate && this.minDate === val.minDate) return;
 
