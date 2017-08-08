@@ -165,7 +165,7 @@
                 prefixCls: prefixCls,
                 datePrefixCls: datePrefixCls,
                 shortcuts: [],
-                date: initMonthDate(),
+                date: initTimeDate(),
                 value: '',
                 minDate: '',
                 maxDate: '',
@@ -219,7 +219,7 @@
                 }
             },
             leftMonth () {
-                return this.date.getMonth()-1;
+                return this.date.getMonth();
             },
             leftMonthLabel () {
                 const month = this.leftMonth -1;
@@ -249,7 +249,7 @@
                 }
             },
             rightMonth () {
-                return this.rightDate.getMonth();
+//                return this.rightDate.getMonth();
             },
             rightMonthLabel () {
                 const month = this.rightMonth + 1;

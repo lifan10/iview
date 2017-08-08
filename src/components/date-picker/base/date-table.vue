@@ -1,8 +1,5 @@
 <template>
-    <div
-        :class="classes"
-        @click="handleClick"
-        @mousemove="handleMouseMove">
+    <div :class="classes" @click="handleClick" @mousemove="handleMouseMove">
         <div :class="[prefixCls + '-header']">
             <span>{{ t('i.datepicker.weeks.sun') }}</span><span>{{ t('i.datepicker.weeks.mon') }}</span><span>{{ t('i.datepicker.weeks.tue') }}</span><span>{{ t('i.datepicker.weeks.wed') }}</span><span>{{ t('i.datepicker.weeks.thu') }}</span><span>{{ t('i.datepicker.weeks.fri') }}</span><span>{{ t('i.datepicker.weeks.sat') }}</span>
         </div>
@@ -89,6 +86,7 @@
                 ];
             },
             cells () {
+                console.log('date-table.vue:cells');
                 const date = new Date(this.year, this.month, 1);
                 let day = getFirstDayOfMonth(date);    // day of first day
                 day = (day === 0 ? 7 : day);
@@ -194,6 +192,7 @@
                 return new Date(year, month, day, hours, minutes, seconds);
             },
             handleClick (event) {
+                console.log('date-table.vue:handleClick');
                 const target = event.target;
                 if (target.tagName === 'EM') {
                     const cell = this.cells[parseInt(event.target.getAttribute('index'))];
@@ -250,6 +249,7 @@
                 }
             },
             markRange (maxDate) {
+                console.log('date-table.vue:markRange');
                 const minDate = this.minDate;
                 if (!maxDate) maxDate = this.maxDate;
 

@@ -382,6 +382,7 @@
                 this.$emit('on-pick', [this.minDate, this.maxDate], visible);
             },
             handleRangePick (val, close = true) {
+                console.log('date-range:handleRangePick');
                 if (this.maxDate === val.maxDate && this.minDate === val.minDate) return;
 
                 this.minDate = val.minDate;
@@ -402,6 +403,7 @@
                 this.isTime = !this.isTime;
             },
             handleTimePick (date) {
+                console.log('date-range.vue:handleTimePick');
                 this.minDate = date[0];
                 this.maxDate = date[1];
                 this.handleConfirm(false);

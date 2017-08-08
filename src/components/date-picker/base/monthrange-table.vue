@@ -1,6 +1,6 @@
 <template>
-    <div :class="classes" @click="handleClick">
-        <span :class="getCellCls(cell)" v-for="(cell, index) in cells"><em :index="index">{{ tCell(cell.text) }}</em></span>
+    <div :class="classes" @click="handleClick" @mousemove="handleMouseMove">
+        <span :class="getCellCls(cell)" v-for="(cell, index) in readCells"><em :index="index">{{ tCell(cell.text) }}</em></span>
     </div>
 </template>
 <script>
@@ -36,6 +36,11 @@
             },
             value: ''
         },
+        data () {
+            return {
+                readCells: []
+            };
+        },
         computed: {
             classes () {
                 return [
@@ -47,8 +52,12 @@
                 let cells = [];
                 const cell_tmpl = {
                     text: '',
+                    type: '',
                     selected: false,
-                    disabled: false
+                    disabled: false,
+                    range: false,
+                    start: false,
+                    end: false
                 };
 
                 for (let i = 0; i < 12; i++) {
@@ -64,16 +73,52 @@
                 }
 
                 return cells;
-                console.log(cells);
+            }
+        },
+        watch:{
+            'rangeState.endDate' (newVal) {
+                this.markRange(newVal);
+            },
+            minDate(newVal, oldVal) {
+                if (newVal && !oldVal) {
+                    this.rangeState.selecting = true;
+                    this.markRange(newVal);
+                } else if (!newVal) {
+                    this.rangeState.selecting = false;
+                    this.markRange(newVal);
+                } else {
+                    this.markRange();
+                }
+            },
+            maxDate(newVal, oldVal) {
+                if (newVal && !oldVal) {
+                    this.rangeState.selecting = false;
+                    this.markRange(newVal);
+//                    this.$emit('on-pick', {
+//                        minDate: this.minDate,
+//                        maxDate: this.maxDate
+//                    });
+                }
+            },
+            cells: {
+                handler (cells) {
+                    this.readCells = cells;
+                },
+                immediate: true
             }
         },
         methods: {
             getCellCls (cell) {
+                console.log(cell);
                 return [
                     `${prefixCls}-cell`,
                     {
-                        [`${prefixCls}-cell-selected`]: cell.selected,
-                        [`${prefixCls}-cell-disabled`]: cell.disabled
+                        [`${prefixCls}-cell-selected`]: cell.selected || cell.start || cell.end,
+                        [`${prefixCls}-cell-disabled`]: cell.disabled,
+                        [`${prefixCls}-cell-today`]: cell.type === 'today',
+                        [`${prefixCls}-cell-prev-month`]: cell.type === 'prev-month',
+                        [`${prefixCls}-cell-next-month`]: cell.type === 'next-month',
+                        [`${prefixCls}-cell-range`]: cell.range && !cell.start && !cell.end
                     }
                 ];
             },
@@ -82,8 +127,6 @@
                 console.log('monthrange-table.vue:handleClick');
                 if (target.tagName === 'EM') {
                     const index = parseInt(event.target.getAttribute('index'));
-                    console.log(index);//0,1,2,3,4,5...
-                    console.log(this.cells);//0,1,2,3,4,5...
                     const cell = this.cells[index];
                     if (cell.disabled) return;
 
@@ -165,6 +208,22 @@
                         cell.end = maxDate && time === maxDay;
                     }
                 });
+            },
+            handleMouseMove (event) {
+                if (!this.rangeState.selecting) return;
+
+                this.$emit('on-changerange', {
+                    minDate: this.minDate,
+                    maxDate: this.maxDate,
+                    rangeState: this.rangeState
+                });
+
+                const target = event.target;
+                if (target.tagName === 'EM') {
+                    const cell = this.cells[parseInt(event.target.getAttribute('index'))];
+//                    if (cell.disabled) return;    // todo 待确定
+                    this.rangeState.endDate = this.getDateOfCell(cell);
+                }
             },
             tCell (cell) {
                 return this.t(`i.datepicker.months.m${cell}`);
