@@ -28,19 +28,19 @@
                         <!--@click="nextYear('left')"-->
                         <!--v-show="leftCurrentView === 'year' || leftCurrentView === 'month'"><Icon type="ios-arrow-right"></Icon></span>-->
                 </div>
-                <date-table
-                    v-show="leftCurrentView === 'date'"
-                    :year="leftYear"
-                    :month="leftMonth"
-                    :date="date"
-                    :min-date="minDate"
-                    :max-date="maxDate"
-                    :range-state="rangeState"
-                    selection-mode="range"
-                    :disabled-date="disabledDate"
-                    @on-changerange="handleChangeRange"
-                    @on-pick="handleRangePick"
-                    @on-pick-click="handlePickClick"></date-table>
+                <!--<date-table-->
+                    <!--v-show="leftCurrentView === 'date'"-->
+                    <!--:year="leftYear"-->
+                    <!--:month="leftMonth"-->
+                    <!--:date="date"-->
+                    <!--:min-date="minDate"-->
+                    <!--:max-date="maxDate"-->
+                    <!--:range-state="rangeState"-->
+                    <!--selection-mode="range"-->
+                    <!--:disabled-date="disabledDate"-->
+                    <!--@on-changerange="handleChangeRange"-->
+                    <!--@on-pick="handleRangePick"-->
+                    <!--@on-pick-click="handlePickClick"></date-table>-->
                 <year-table
                     ref="leftYearTable"
                     v-show="leftCurrentView === 'year'"
@@ -86,19 +86,19 @@
                         <!--@click="nextMonth"-->
                         <!--v-show="rightCurrentView === 'month'"><Icon type="ios-arrow-right"></Icon></span>-->
                 </div>
-                <date-table
-                    v-show="rightCurrentView === 'date'"
-                    :year="rightYear"
-                    :month="rightMonth"
-                    :date="rightDate"
-                    :min-date="minDate"
-                    :max-date="maxDate"
-                    :range-state="rangeState"
-                    selection-mode="range"
-                    :disabled-date="disabledDate"
-                    @on-changerange="handleChangeRange"
-                    @on-pick="handleRangePick"
-                    @on-pick-click="handlePickClick"></date-table>
+                <!--<date-table-->
+                    <!--v-show="rightCurrentView === 'date'"-->
+                    <!--:year="rightYear"-->
+                    <!--:month="rightMonth"-->
+                    <!--:date="rightDate"-->
+                    <!--:min-date="minDate"-->
+                    <!--:max-date="maxDate"-->
+                    <!--:range-state="rangeState"-->
+                    <!--selection-mode="range"-->
+                    <!--:disabled-date="disabledDate"-->
+                    <!--@on-changerange="handleChangeRange"-->
+                    <!--@on-pick="handleRangePick"-->
+                    <!--@on-pick-click="handlePickClick"></date-table>-->
                 <year-table
                     ref="rightYearTable"
                     v-show="rightCurrentView === 'year'"
@@ -143,7 +143,7 @@
 </template>
 <script>
     import Icon from '../../icon/icon.vue';
-    import DateTable from '../base/date-table.vue';
+    //import DateTable from '../base/date-table.vue';
     import YearTable from '../base/year-table.vue';
     import MonthTable from '../base/monthrange-table.vue';
     import TimePicker from './time-range.vue';
@@ -159,7 +159,8 @@
     export default {
         name: 'DatePicker',
         mixins: [ Mixin, Locale ],
-        components: { Icon, DateTable, YearTable, MonthTable, TimePicker, Confirm },
+        //components: { Icon, DateTable, YearTable, MonthTable, TimePicker, Confirm },
+        components: { Icon,  YearTable, MonthTable, TimePicker, Confirm },
         data () {
             return {
                 prefixCls: prefixCls,
@@ -398,11 +399,14 @@
             },
             //on-pick
             handleRangePick (val, close = true) {
+                console.log(val);
+                console.log("111111this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
                 if (this.maxDate === val.maxDate && this.minDate === val.minDate) return;
 
                 this.minDate = val.minDate;
                 this.maxDate = val.maxDate;
 
+                console.log("222222this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
                 if (!close) return;
 //                if (!this.showTime) {
 //                    this.handleConfirm(false);
@@ -413,6 +417,7 @@
                 this.minDate = val.minDate;
                 this.maxDate = val.maxDate;
                 this.rangeState = val.rangeState;
+                //console.log(val);
             },
             handleToggleTime () {
                 this.isTime = !this.isTime;

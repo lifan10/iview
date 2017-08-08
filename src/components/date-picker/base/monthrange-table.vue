@@ -7,8 +7,14 @@
     import { deepCopy } from '../../../utils/assist';
     import Locale from '../../../mixins/locale';
     const prefixCls = 'ivu-date-picker-cells';
-    const clearHours = function (time) {
+//    const clearHours = function (time) {
+//        const cloneDate = new Date(time);
+//        cloneDate.setHours(0, 0, 0, 0);
+//        return cloneDate.getTime();
+//    };
+    const clearMonth = function (time) {
         const cloneDate = new Date(time);
+        cloneDate.setDate(0);
         cloneDate.setHours(0, 0, 0, 0);
         return cloneDate.getTime();
     };
@@ -38,6 +44,7 @@
         },
         data () {
             return {
+                prefixCls: prefixCls,
                 readCells: []
             };
         },
@@ -49,12 +56,16 @@
                 ];
             },
             cells () {
+                const selectMonth = clearMonth(new Date(this.value));    // timestamp of selected day
+                const minMonth = clearMonth(new Date(this.minDate));
+                const maxMonth = clearMonth(new Date(this.maxDate));
+
                 let cells = [];
                 const cell_tmpl = {
                     text: '',
-                    type: '',
+                    type: '', // today,normal
                     selected: false,
-                    disabled: false,
+                    disabled: false,// 不可选则的
                     range: false,
                     start: false,
                     end: false
@@ -62,16 +73,22 @@
 
                 for (let i = 0; i < 12; i++) {
                     const cell = deepCopy(cell_tmpl);
-                    cell.text = i + 1;
+
+                    const month = clearMonth(new Date(this.year, this.month));
 
                     const date = new Date(this.date);
                     date.setMonth(i);
-                    cell.disabled = typeof this.disabledDate === 'function' && this.disabledDate(date)  && this.selectionMode === 'month';
 
-                    cell.selected = Number(this.month) === i;
+                    cell.type = Number(this.month) === i ? 'today' : 'normal';
+                    cell.text = i + 1;
+                    cell.selected = month === selectMonth;
+                    cell.disabled = typeof this.disabledDate === 'function' && this.disabledDate(date)  && this.selectionMode === 'range';
+                    cell.range = month >= minMonth && month <= maxMonth;
+                    cell.start = this.minDate && month === minMonth;
+                    cell.end = this.maxDate && month === maxMonth;
                     cells.push(cell);
                 }
-
+                console.log("----->"+cells);
                 return cells;
             }
         },
@@ -109,15 +126,15 @@
         },
         methods: {
             getCellCls (cell) {
-                console.log(cell);
+                //console.log(cell);
                 return [
                     `${prefixCls}-cell`,
                     {
                         [`${prefixCls}-cell-selected`]: cell.selected || cell.start || cell.end,
                         [`${prefixCls}-cell-disabled`]: cell.disabled,
                         [`${prefixCls}-cell-today`]: cell.type === 'today',
-                        [`${prefixCls}-cell-prev-month`]: cell.type === 'prev-month',
-                        [`${prefixCls}-cell-next-month`]: cell.type === 'next-month',
+                        //[`${prefixCls}-cell-prev-month`]: cell.type === 'prev-month',
+                        //[`${prefixCls}-cell-next-month`]: cell.type === 'next-month',
                         [`${prefixCls}-cell-range`]: cell.range && !cell.start && !cell.end
                     }
                 ];
@@ -131,9 +148,9 @@
                     if (cell.disabled) return;
 
                     const newDate = this.getDateOfCell(cell);
-                    console.log(newDate);
 
                     if(this.selectionMode=='range'){
+                        //console.log("monthrange-table.vue:handleClick --->minDate:" + this.minDate + "--->maxDate:" + this.maxDate +"--->newDate:" + newDate);
                         if (this.minDate && this.maxDate) {
                             const minDate = new Date(newDate.getTime());
                             const maxDate = null;
@@ -196,28 +213,32 @@
             markRange (maxDate) {
                 const minDate = this.minDate;
                 if (!maxDate) maxDate = this.maxDate;
+                //console.log("monthrange-table.vue:markRange --->minDate:" + minDate + "--->maxDate:" + maxDate);
 
-                const minDay = clearHours(new Date(minDate));
-                const maxDay = clearHours(new Date(maxDate));
+//                const minDay = clearHours(new Date(minDate));
+//                const maxDay = clearHours(new Date(maxDate));
+                const minMonth = clearMonth(new Date(minDate));
+                const maxMonth = clearMonth(new Date(maxDate));
 
                 this.cells.forEach(cell => {
                     if (cell.type === 'today' || cell.type === 'normal') {
-                        const time = clearHours(new Date(this.year, this.month, cell.text));
-                        cell.range = time >= minDay && time <= maxDay;
-                        cell.start = minDate && time === minDay;
-                        cell.end = maxDate && time === maxDay;
+                        const time = clearMonth(new Date(this.year,this.month));//clearHours(new Date(this.year, this.month, cell.text));
+                        cell.range = time >= minMonth && time <= maxMonth;
+                        cell.start = minDate && time === minMonth;
+                        cell.end = maxDate && time === maxMonth;
                     }
                 });
+                //console.log(this.cells);
             },
             handleMouseMove (event) {
                 if (!this.rangeState.selecting) return;
-
                 this.$emit('on-changerange', {
                     minDate: this.minDate,
                     maxDate: this.maxDate,
                     rangeState: this.rangeState
                 });
 
+                //console.log("handleMouseMove--->" + !this.rangeState.selecting);
                 const target = event.target;
                 if (target.tagName === 'EM') {
                     const cell = this.cells[parseInt(event.target.getAttribute('index'))];
