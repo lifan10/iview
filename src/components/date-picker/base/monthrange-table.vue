@@ -23,12 +23,10 @@
         props: {
             date: {},
             year:{},
-            month: {
-                type: Number
-            },
+            month: {},
             disabledDate: {},
             selectionMode: {
-                default: 'month'
+                default: 'range'
             },
             minDate: {},
             maxDate: {},
@@ -48,12 +46,19 @@
                 readCells: []
             };
         },
-        computed: { ,
+        computed: {
+            classes () {
+               return [
+                   `${prefixCls}`,
+                   `${prefixCls}-month`
+                ];
+            },
             cells () {
                 const selectMonth = clearMonth(new Date(this.value));    // timestamp of selected day
                 const minMonth = clearMonth(new Date(this.minDate));
                 const maxMonth = clearMonth(new Date(this.maxDate));
                 const curMonth = clearMonth(new Date());
+//                console.log('monthrange-table'+this.value);
 
                 let cells = [];
                 const cell_tmpl = {
@@ -83,7 +88,7 @@
                     cell.end = this.maxDate && month === maxMonth;
                     cells.push(cell);
                 }
-                console.log('this.value'+this.value);
+//                console.log(cells);
                 return cells;
             }
         },
@@ -141,17 +146,17 @@
                     if (cell.disabled) return;
 
                     const newDate = this.getDateOfCell(cell);
-
+//                    console.log('monthrange-table.vue:newDate'+newDate);
                     if(this.selectionMode=='range'){
                         //console.log("monthrange-table.vue:handleClick --->minDate:" + this.minDate + "--->maxDate:" + this.maxDate +"--->newDate:" + newDate);
-                        if (this.minDate && this.maxDate) {
+                        if (this.minDate && this.maxDate) {//有最小最大
                             const minDate = new Date(newDate.getTime());
                             const maxDate = null;
                             this.rangeState.selecting = true;
                             this.markRange(this.minDate);
 
                             this.$emit('on-pick', {minDate, maxDate}, false);
-                        } else if (this.minDate && !this.maxDate) {
+                        } else if (this.minDate && !this.maxDate) {//有最小无最大
                             if (newDate >= this.minDate) {
                                 const maxDate = new Date(newDate.getTime());
                                 this.rangeState.selecting = false;
@@ -162,7 +167,7 @@
 
                                 this.$emit('on-pick', {minDate, maxDate: this.maxDate}, false);
                             }
-                        } else if (!this.minDate) {
+                        } else if (!this.minDate) {//无最小
                             const minDate = new Date(newDate.getTime());
                             this.rangeState.selecting = true;
                             this.markRange(this.minDate);

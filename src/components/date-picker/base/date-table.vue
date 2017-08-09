@@ -86,7 +86,6 @@
                 ];
             },
             cells () {
-                console.log('date-table.vue:cells');
                 const date = new Date(this.year, this.month, 1);
                 let day = getFirstDayOfMonth(date);    // day of first day
                 day = (day === 0 ? 7 : day);
@@ -94,6 +93,7 @@
                 const selectDay = clearHours(new Date(this.value));    // timestamp of selected day
                 const minDay = clearHours(new Date(this.minDate));
                 const maxDay = clearHours(new Date(this.maxDate));
+                console.log(this.value);
 
                 const dateCountOfMonth = getDayCountOfMonth(date.getFullYear(), date.getMonth());
                 const dateCountOfLastMonth = getDayCountOfMonth(date.getFullYear(), (date.getMonth() === 0 ? 11 : date.getMonth() - 1));
@@ -110,6 +110,8 @@
                     start: false,
                     end: false
                 };
+
+                //上一个月的日期
                 if (day !== 7) {
                     for (let i = 0; i < day; i++) {
                         const cell = deepCopy(cell_tmpl);
@@ -127,7 +129,7 @@
                         cells.push(cell);
                     }
                 }
-
+                //本月的日期
                 for (let i = 1; i <= dateCountOfMonth; i++) {
                     const cell = deepCopy(cell_tmpl);
                     const time = clearHours(new Date(this.year, this.month, i));
@@ -141,7 +143,7 @@
 
                     cells.push(cell);
                 }
-
+                //下一个月的日期
                 const nextMonthCount = 42 - cells.length;
                 for (let i = 1; i <= nextMonthCount; i++) {
                     const cell = deepCopy(cell_tmpl);
@@ -192,7 +194,7 @@
                 return new Date(year, month, day, hours, minutes, seconds);
             },
             handleClick (event) {
-                console.log('date-table.vue:handleClick');
+//                console.log('date-table.vue:handleClick');
                 const target = event.target;
                 if (target.tagName === 'EM') {
                     const cell = this.cells[parseInt(event.target.getAttribute('index'))];
@@ -223,7 +225,7 @@
                             const minDate = new Date(newDate.getTime());
                             this.rangeState.selecting = true;
                             this.markRange(this.minDate);
-
+//                            console.log(this.cells);
                             this.$emit('on-pick', {minDate, maxDate: this.maxDate}, false);
                         }
                     } else {
@@ -249,7 +251,7 @@
                 }
             },
             markRange (maxDate) {
-                console.log('date-table.vue:markRange');
+//                console.log('date-table.vue:markRange');
                 const minDate = this.minDate;
                 if (!maxDate) maxDate = this.maxDate;
 
@@ -266,6 +268,7 @@
                 });
             },
             getCellCls (cell) {
+//                console.log(cell);
                 return [
                     `${prefixCls}-cell`,
                     {

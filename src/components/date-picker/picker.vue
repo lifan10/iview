@@ -282,7 +282,7 @@
             },
             //点击日历外围时触发关闭面板操作
             handleClose () {
-                console.log('picker.vue:handleClose');
+//                console.log('picker.vue:handleClose');
                 if (this.disableCloseUnderTransfer) {
                     this.disableCloseUnderTransfer = false;
                     return false;
@@ -294,7 +294,7 @@
                 this.disableClickOutSide = false;
             },
             handleFocus () {
-                console.log('picker.vue:handleFocus');
+//                console.log('picker.vue:handleFocus');
                 if (this.readonly) return;
                 this.visible = true;
             },

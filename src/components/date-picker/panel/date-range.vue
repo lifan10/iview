@@ -273,6 +273,7 @@
                     if (this.minDate) this.date = new Date(this.minDate);
                 }
                 if (this.showTime) this.$refs.timePicker.value = newVal;
+//                console.log('watch:value'+this.value);
             },
             minDate (val) {
                 if (this.showTime) this.$refs.timePicker.date = val;
@@ -382,7 +383,7 @@
                 this.$emit('on-pick', [this.minDate, this.maxDate], visible);
             },
             handleRangePick (val, close = true) {
-                console.log('date-range:handleRangePick');
+                console.log(this.value);
                 if (this.maxDate === val.maxDate && this.minDate === val.minDate) return;
 
                 this.minDate = val.minDate;

@@ -153,6 +153,7 @@
     import Mixin from './mixin';
     import Locale from '../../../mixins/locale';
 
+
     const prefixCls = 'ivu-picker-panel';
     const datePrefixCls = 'ivu-date-picker';
 
@@ -284,6 +285,8 @@
                     if (this.minDate) this.date = new Date(this.minDate);
                 }
                 if (this.showTime) this.$refs.timePicker.value = newVal;
+                this.value=newVal;
+//                console.log('month-range'+newVal);
             },
             minDate (val) {
                 if (this.showTime) this.$refs.timePicker.date = val;
@@ -363,15 +366,15 @@
                 this[`${direction}CurrentView`] = 'month';
             },
             handleLeftMonthPick (month) {
-                console.log('handleLeftMonthPick');
+//                console.log('handleLeftMonthPick');
                 this.handleMonthPick(month, 'left');
             },
             handleRightMonthPick (month){
                 this.handleMonthPick(month, 'right');
             },
             handleMonthPick (month, direction) {
-                console.log('handleMonthPick');
-                console.log(month);
+//                console.log('handleMonthPick');
+//                console.log(month);
                 let year = this[`${direction}TableYear`];
                 if (direction === 'right') {
                     if (month === 0) {
@@ -400,13 +403,13 @@
             //on-pick
             handleRangePick (val, close = true) {
                 console.log(val);
-                console.log("111111this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
+//                console.log("111111this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
                 if (this.maxDate === val.maxDate && this.minDate === val.minDate) return;
 
                 this.minDate = val.minDate;
                 this.maxDate = val.maxDate;
 
-                console.log("222222this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
+//                console.log("222222this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
                 if (!close) return;
 //                if (!this.showTime) {
 //                    this.handleConfirm(false);
