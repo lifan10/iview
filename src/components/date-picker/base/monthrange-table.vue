@@ -48,17 +48,12 @@
                 readCells: []
             };
         },
-        computed: {
-            classes () {
-                return [
-                    `${prefixCls}`,
-                    `${prefixCls}-month`
-                ];
-            },
+        computed: { ,
             cells () {
                 const selectMonth = clearMonth(new Date(this.value));    // timestamp of selected day
                 const minMonth = clearMonth(new Date(this.minDate));
                 const maxMonth = clearMonth(new Date(this.maxDate));
+                const curMonth = clearMonth(new Date());
 
                 let cells = [];
                 const cell_tmpl = {
@@ -73,13 +68,13 @@
 
                 for (let i = 0; i < 12; i++) {
                     const cell = deepCopy(cell_tmpl);
-
-                    const month = clearMonth(new Date(this.year, this.month));
+                    //循环中的当前月
+                    const month = clearMonth(new Date(this.year, i));
 
                     const date = new Date(this.date);
                     date.setMonth(i);
 
-                    cell.type = Number(this.month) === i ? 'today' : 'normal';
+                    cell.type = curMonth === month ? 'today' : 'normal';
                     cell.text = i + 1;
                     cell.selected = month === selectMonth;
                     cell.disabled = typeof this.disabledDate === 'function' && this.disabledDate(date)  && this.selectionMode === 'range';
@@ -88,7 +83,7 @@
                     cell.end = this.maxDate && month === maxMonth;
                     cells.push(cell);
                 }
-                console.log("----->"+cells);
+                console.log('this.value'+this.value);
                 return cells;
             }
         },
@@ -130,11 +125,9 @@
                 return [
                     `${prefixCls}-cell`,
                     {
-                        [`${prefixCls}-cell-selected`]: cell.selected || cell.start || cell.end,
+                        [`${prefixCls}-cell-selected`]: cell.selected,
                         [`${prefixCls}-cell-disabled`]: cell.disabled,
                         [`${prefixCls}-cell-today`]: cell.type === 'today',
-                        //[`${prefixCls}-cell-prev-month`]: cell.type === 'prev-month',
-                        //[`${prefixCls}-cell-next-month`]: cell.type === 'next-month',
                         [`${prefixCls}-cell-range`]: cell.range && !cell.start && !cell.end
                     }
                 ];
