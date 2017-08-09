@@ -66,10 +66,6 @@
                 if (newVal && !oldVal) {
                     this.rangeState.selecting = false;
                     this.markRange(newVal);
-//                    this.$emit('on-pick', {
-//                        minDate: this.minDate,
-//                        maxDate: this.maxDate
-//                    });
                 }
             },
             cells: {
@@ -86,6 +82,7 @@
                 ];
             },
             cells () {
+                console.log('this.year + this.month'+this.year+'年' + this.month+'月');
                 const date = new Date(this.year, this.month, 1);
                 let day = getFirstDayOfMonth(date);    // day of first day
                 day = (day === 0 ? 7 : day);
@@ -93,7 +90,7 @@
                 const selectDay = clearHours(new Date(this.value));    // timestamp of selected day
                 const minDay = clearHours(new Date(this.minDate));
                 const maxDay = clearHours(new Date(this.maxDate));
-                console.log(this.value);
+                console.log('date-table.vue---cells():'+this.value);
 
                 const dateCountOfMonth = getDayCountOfMonth(date.getFullYear(), date.getMonth());
                 const dateCountOfLastMonth = getDayCountOfMonth(date.getFullYear(), (date.getMonth() === 0 ? 11 : date.getMonth() - 1));
@@ -160,6 +157,7 @@
                     cell.disabled = typeof disabledDate === 'function' && disabledDate(new Date(time));
                     cells.push(cell);
                 }
+//                console.log('date-table.vue---cells():'+this.value);
 
                 return cells;
             }
