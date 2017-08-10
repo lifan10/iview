@@ -14,7 +14,7 @@
 //    };
     const clearMonth = function (time) {
         const cloneDate = new Date(time);
-        cloneDate.setDate(0);
+        cloneDate.setDate(1);
         cloneDate.setHours(0, 0, 0, 0);
         return cloneDate.getTime();
     };
@@ -59,7 +59,8 @@
                 const minMonth = clearMonth(new Date(this.minDate));
                 const maxMonth = clearMonth(new Date(this.maxDate));
                 const curMonth = clearMonth(new Date());
-//                console.log('monthrange-table'+this.value);
+                //console.log('monthrange-table.vue----cells():'+this.value);
+                console.log('monthrange-table:cells'+this.year+'年' + this.month+'月');
 
                 let cells = [];
                 const cell_tmpl = {
@@ -140,7 +141,7 @@
             },
             handleClick (event) {
                 const target = event.target;
-                console.log('monthrange-table.vue:handleClick');
+                //console.log('monthrange-table.vue:handleClick');
                 if (target.tagName === 'EM') {
                     const index = parseInt(event.target.getAttribute('index'));
                     const cell = this.cells[index];
@@ -150,7 +151,7 @@
                     this.selectDate = this.getDateOfCell(cell);
 //                    console.log('monthrange-table.vue:newDate'+newDate);
                     if(this.selectionMode=='range'){
-                        //console.log("monthrange-table.vue:handleClick --->minDate:" + this.minDate + "--->maxDate:" + this.maxDate +"--->newDate:" + newDate);
+                        console.log("monthrange-table.vue:handleClick --->minDate:" + this.minDate + "--->maxDate:" + this.maxDate +"--->newDate:" + newDate);
                         if (this.minDate && this.maxDate) {//有最小最大
                             const minDate = new Date(newDate.getTime());
                             const maxDate = null;
@@ -214,18 +215,23 @@
                 const minDate = this.minDate;
                 if (!maxDate) maxDate = this.maxDate;
                 //console.log("monthrange-table.vue:markRange --->minDate:" + minDate + "--->maxDate:" + maxDate);
+                console.log('monthrange-table:markRange'+this.year + this.month);
 
 //                const minDay = clearHours(new Date(minDate));
 //                const maxDay = clearHours(new Date(maxDate));
                 const minMonth = clearMonth(new Date(minDate));
                 const maxMonth = clearMonth(new Date(maxDate));
+//                console.log(this.year + this.month);
 
                 this.cells.forEach(cell => {
                     if (cell.type === 'today' || cell.type === 'normal') {
-                        const time = clearMonth(new Date(this.year,this.month));//clearHours(new Date(this.year, this.month, cell.text));
+                        var nowDate = new Date(this.year,this.month);
+                        const time = clearMonth(nowDate);//clearHours(new Date(this.year, this.month, cell.text));
                         cell.range = time >= minMonth && time <= maxMonth;
                         cell.start = minDate && time === minMonth;
                         cell.end = maxDate && time === maxMonth;
+//                        console.log("xxxxxxxxx --->minDate:" + minDate + "--->maxDate:" + maxDate + "--->time:" + time);
+//                        console.log("xxxxxxxxx --->minMonth:" + minMonth + "--->maxMonth:" + maxMonth + "--->time:" + time);
                     }
                 });
                 //console.log(this.cells);
