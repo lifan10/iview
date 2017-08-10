@@ -43,7 +43,8 @@
         data () {
             return {
                 prefixCls: prefixCls,
-                readCells: []
+                readCells: [],
+                selectDate:''
             };
         },
         computed: {
@@ -130,7 +131,7 @@
                 return [
                     `${prefixCls}-cell`,
                     {
-                        [`${prefixCls}-cell-selected`]: cell.selected,
+                        [`${prefixCls}-cell-selected`]: cell.selected|| cell.start || cell.end,
                         [`${prefixCls}-cell-disabled`]: cell.disabled,
                         [`${prefixCls}-cell-today`]: cell.type === 'today',
                         [`${prefixCls}-cell-range`]: cell.range && !cell.start && !cell.end
@@ -146,6 +147,7 @@
                     if (cell.disabled) return;
 
                     const newDate = this.getDateOfCell(cell);
+                    this.selectDate = this.getDateOfCell(cell);
 //                    console.log('monthrange-table.vue:newDate'+newDate);
                     if(this.selectionMode=='range'){
                         //console.log("monthrange-table.vue:handleClick --->minDate:" + this.minDate + "--->maxDate:" + this.maxDate +"--->newDate:" + newDate);

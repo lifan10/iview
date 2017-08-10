@@ -67,47 +67,13 @@
             </div>
             <div :class="[prefixCls + '-content', prefixCls + '-content-right']" v-show="!isTime">
                 <div :class="[datePrefixCls + '-header']" v-show="rightCurrentView !== 'time'">
-                     <!--<span-->
-                         <!--:class="iconBtnCls('prev', '-double')"-->
-                         <!--@click="prevYear('right')"-->
-                         <!--v-show="rightCurrentView === 'year' || rightCurrentView === 'month'"><Icon type="ios-arrow-left"></Icon></span>-->
                     <span
                         :class="[datePrefixCls + '-header-label']"
                         @click="showYearPicker('right')">{{ rightYearLabel }}</span>
-                    <!--<span-->
-                        <!--:class="[datePrefixCls + '-header-label']"-->
-                        <!--@click="showMonthPicker('right')"-->
-                        <!--v-show="rightCurrentView === 'month'">{{ rightMonthLabel }}</span>-->
                     <span
                         :class="iconBtnCls('next', '-double')"
                         @click="nextYear('right')"><Icon type="ios-arrow-right"></Icon></span>
-                    <!--<span-->
-                        <!--:class="iconBtnCls('next')"-->
-                        <!--@click="nextMonth"-->
-                        <!--v-show="rightCurrentView === 'month'"><Icon type="ios-arrow-right"></Icon></span>-->
                 </div>
-                <!--<date-table-->
-                    <!--v-show="rightCurrentView === 'date'"-->
-                    <!--:year="rightYear"-->
-                    <!--:month="rightMonth"-->
-                    <!--:date="rightDate"-->
-                    <!--:min-date="minDate"-->
-                    <!--:max-date="maxDate"-->
-                    <!--:range-state="rangeState"-->
-                    <!--selection-mode="range"-->
-                    <!--:disabled-date="disabledDate"-->
-                    <!--@on-changerange="handleChangeRange"-->
-                    <!--@on-pick="handleRangePick"-->
-                    <!--@on-pick-click="handlePickClick"></date-table>-->
-                <year-table
-                    ref="rightYearTable"
-                    v-show="rightCurrentView === 'year'"
-                    :year="rightTableYear"
-                    :date="rightTableDate"
-                    selection-mode="range"
-                    :disabled-date="disabledDate"
-                    @on-pick="handleRightYearPick"
-                    @on-pick-click="handlePickClick"></year-table>
                 <month-table
                     ref="rightMonthTable"
                     v-show="leftCurrentView === 'month'"
@@ -228,7 +194,7 @@
                 return this.t(`i.datepicker.month${month}`);
             },
             rightYear () {
-                return this.rightDate.getFullYear()+1;
+                return this.rightDate.getFullYear();
             },
             rightTableDate () {
                 if (this.rightCurrentView === 'year' || this.rightCurrentView === 'month') {
@@ -251,7 +217,7 @@
                 }
             },
             rightMonth () {
-//                return this.rightDate.getMonth();
+                return this.rightDate.getMonth();
             },
             rightMonthLabel () {
                 const month = this.rightMonth + 1;
@@ -259,15 +225,10 @@
             },
             rightDate () {
                 const newDate = new Date(this.date);
-                const month = newDate.getMonth();
+                const year = newDate.getFullYear()+1;
+                newDate.setFullYear(year);
+                newDate.setMonth(0);
                 newDate.setDate(1);
-
-                if (month === 11) {
-                    newDate.setFullYear(newDate.getFullYear() + 1);
-                    newDate.setMonth(0);
-                } else {
-                    newDate.setMonth(month + 1);
-                }
                 return newDate;
             },
             timeDisabled () {
@@ -305,7 +266,7 @@
             resetDate () {
                 this.date = new Date(this.date);
                 this.leftTableYear = this.date.getFullYear();
-//                this.rightTableYear = this.rightDate.getFullYear();
+                this.rightTableYear = this.rightDate.getFullYear();
             },
             handleClear() {
                 this.minDate = null;
@@ -323,29 +284,15 @@
 
                 if (reset) this.isTime = false;
             },
-            prevYear (direction) {
-                if (this[`${direction}CurrentView`] === 'year') {
-                    this.$refs[`${direction}YearTable`].prevTenYear();
-                } else if (this[`${direction}CurrentView`] === 'month') {
-                    this[`${direction}TableYear`]--;
-                    this.rightTableYear = this[`${direction}TableYear`]+1;
-                } else {
-                    const date = this.date;
-                    date.setFullYear(date.getFullYear() - 1);
-                    this.resetDate();
-                }
+            prevYear () {
+                const date = this.date;
+                date.setFullYear(date.getFullYear() - 1);
+                this.resetDate();
             },
-            nextYear (direction) {
-                if (this[`${direction}CurrentView`] === 'year') {
-                    this.$refs[`${direction}YearTable`].nextTenYear();
-                } else if (this[`${direction}CurrentView`] === 'month') {
-                    this[`${direction}TableYear`]++;
-                    this.leftTableYear = this[`${direction}TableYear`]-1;
-                } else {
-                    const date = this.date;
-                    date.setFullYear(date.getFullYear() + 1);
-                    this.resetDate();
-                }
+            nextYear () {
+                const date = this.date;
+                date.setFullYear(date.getFullYear() + 1);
+                this.resetDate();
             },
             prevMonth () {
                 this.date = prevMonth(this.date);

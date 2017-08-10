@@ -186,6 +186,7 @@
                 ];
             },
             leftYear () {
+                console.log('leftyear------'+this.date.getFullYear());
                 return this.date.getFullYear();
             },
             leftTableDate () {
