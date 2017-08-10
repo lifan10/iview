@@ -78,6 +78,7 @@
                     ref="rightMonthTable"
                     v-show="leftCurrentView === 'month'"
                     :year="rightYear"
+                    :month="rightMonth"
                     :date="rightDate"
                     :min-date="minDate"
                     :max-date="maxDate"
@@ -246,7 +247,7 @@
                 }
                 if (this.showTime) this.$refs.timePicker.value = newVal;
                 this.value=newVal;
-                console.log('month-range-----watch:value()'+this.value);
+//                console.log('month-range-----watch:value()'+this.value);
             },
             minDate (val) {
                 if (this.showTime) this.$refs.timePicker.date = val;
@@ -348,14 +349,14 @@
             },
             //on-pick
             handleRangePick (val, close = true) {
-                console.log("month-range.vue:--->handleRangePick--->this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
+//                console.log("month-range.vue:--->handleRangePick--->this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
                 if (this.maxDate === val.maxDate && this.minDate === val.minDate) return;
 
                 this.minDate = val.minDate;
                 this.maxDate = val.maxDate;
 
 
-                console.log("month-range.vue:--->handleRangePick--->this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
+//                console.log("month-range.vue:--->handleRangePick--->this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
                 if (!close) return;
 //                if (!this.showTime) {
 //                    this.handleConfirm(false);
