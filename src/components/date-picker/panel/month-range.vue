@@ -12,35 +12,10 @@
                     <span
                         :class="iconBtnCls('prev', '-double')"
                         @click="prevYear('left')"><Icon type="ios-arrow-left"></Icon></span>
-                    <!--<span-->
-                        <!--:class="iconBtnCls('prev')"-->
-                        <!--@click="prevMonth"-->
-                        <!--v-show="leftCurrentView === 'month'"><Icon type="ios-arrow-left"></Icon></span>-->
                     <span
                         :class="[datePrefixCls + '-header-label']"
                         @click="showYearPicker('left')">{{ leftYearLabel }}</span>
-                    <!--<span-->
-                        <!--:class="[datePrefixCls + '-header-label']"-->
-                        <!--@click="showMonthPicker('left')"-->
-                        <!--v-show="leftCurrentView === 'month'">{{ leftMonthLabel }}</span>-->
-                    <!--<span-->
-                        <!--:class="iconBtnCls('next', '-double')"-->
-                        <!--@click="nextYear('left')"-->
-                        <!--v-show="leftCurrentView === 'year' || leftCurrentView === 'month'"><Icon type="ios-arrow-right"></Icon></span>-->
                 </div>
-                <!--<date-table-->
-                    <!--v-show="leftCurrentView === 'date'"-->
-                    <!--:year="leftYear"-->
-                    <!--:month="leftMonth"-->
-                    <!--:date="date"-->
-                    <!--:min-date="minDate"-->
-                    <!--:max-date="maxDate"-->
-                    <!--:range-state="rangeState"-->
-                    <!--selection-mode="range"-->
-                    <!--:disabled-date="disabledDate"-->
-                    <!--@on-changerange="handleChangeRange"-->
-                    <!--@on-pick="handleRangePick"-->
-                    <!--@on-pick-click="handlePickClick"></date-table>-->
                 <year-table
                     ref="leftYearTable"
                     v-show="leftCurrentView === 'year'"
@@ -74,9 +49,18 @@
                         :class="iconBtnCls('next', '-double')"
                         @click="nextYear('right')"><Icon type="ios-arrow-right"></Icon></span>
                 </div>
+                <year-table
+                    ref="rightYearTable"
+                    v-show="rightCurrentView === 'year'"
+                    :year="rightTableYear"
+                    :date="rightTableDate"
+                    selection-mode="range"
+                    :disabled-date="disabledDate"
+                    @on-pick="handleRightYearPick"
+                    @on-pick-click="handlePickClick"></year-table>
                 <month-table
                     ref="rightMonthTable"
-                    v-show="leftCurrentView === 'month'"
+                    v-show="rightCurrentView === 'month'"
                     :year="rightYear"
                     :month="rightMonth"
                     :date="rightDate"
@@ -340,6 +324,7 @@
             showYearPicker (direction) {
                 this[`${direction}CurrentView`] = 'year';
                 this[`${direction}TableYear`] = this[`${direction}Year`];
+                console.log(this.rightCurrentView);
             },
             showMonthPicker (direction) {
                 this[`${direction}CurrentView`] = 'month';
@@ -349,18 +334,13 @@
             },
             //on-pick
             handleRangePick (val, close = true) {
-//                console.log("month-range.vue:--->handleRangePick--->this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
+                console.log("month-range.vue:--->handleRangePick--->this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
                 if (this.maxDate === val.maxDate && this.minDate === val.minDate) return;
 
                 this.minDate = val.minDate;
                 this.maxDate = val.maxDate;
 
-
-//                console.log("month-range.vue:--->handleRangePick--->this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
                 if (!close) return;
-//                if (!this.showTime) {
-//                    this.handleConfirm(false);
-//                }
                 this.handleConfirm(false);
             },
             handleChangeRange (val) {

@@ -60,8 +60,6 @@
                 const minMonth = clearMonth(new Date(this.minDate));
                 const maxMonth = clearMonth(new Date(this.maxDate));
                 const curMonth = clearMonth(new Date());
-                //console.log('monthrange-table.vue----cells():'+this.value);
-//                console.log('monthrange-table:cells'+this.year+'年' + this.month+'月');
 
                 let cells = [];
                 const cell_tmpl = {
@@ -114,10 +112,6 @@
                 if (newVal && !oldVal) {
                     this.rangeState.selecting = false;
                     this.markRange(newVal);
-//                    this.$emit('on-pick', {
-//                        minDate: this.minDate,
-//                        maxDate: this.maxDate
-//                    });
                 }
             },
             cells: {
@@ -129,7 +123,6 @@
         },
         methods: {
             getCellCls (cell) {
-                //console.log(cell);
                 return [
                     `${prefixCls}-cell`,
                     {
@@ -141,8 +134,8 @@
                 ];
             },
             handleClick (event) {
+                console.log('monthrange-table.vue:handleClick');
                 const target = event.target;
-                //console.log('monthrange-table.vue:handleClick');
                 if (target.tagName === 'EM') {
                     const index = parseInt(event.target.getAttribute('index'));
                     const cell = this.cells[index];
@@ -150,17 +143,15 @@
 
                     const newDate = this.getDateOfCell(cell);
                     this.selectDate = this.getDateOfCell(cell);
-//                    console.log('monthrange-table.vue:newDate'+newDate);
                     if(this.selectionMode=='range'){
-//                        console.log("monthrange-table.vue:handleClick --->minDate:" + this.minDate + "--->maxDate:" + this.maxDate +"--->newDate:" + newDate);
-                        if (this.minDate && this.maxDate) {//有最小最大
+                        if (this.minDate && this.maxDate) {//有最小最大---- 保留上选择的最大最小，从新选则，选最小
                             const minDate = new Date(newDate.getTime());
                             const maxDate = null;
                             this.rangeState.selecting = true;
                             this.markRange(this.minDate);
 
                             this.$emit('on-pick', {minDate, maxDate}, false);
-                        } else if (this.minDate && !this.maxDate) {//有最小无最大
+                        } else if (this.minDate && !this.maxDate) {//有最小无最大----最小已经选择，选最大值
                             if (newDate >= this.minDate) {
                                 const maxDate = new Date(newDate.getTime());
                                 this.rangeState.selecting = false;
@@ -171,7 +162,7 @@
 
                                 this.$emit('on-pick', {minDate, maxDate: this.maxDate}, false);
                             }
-                        } else if (!this.minDate) {//无最小
+                        } else if (!this.minDate) {//无最小----选最小
                             const minDate = new Date(newDate.getTime());
                             this.rangeState.selecting = true;
                             this.markRange(this.minDate);
