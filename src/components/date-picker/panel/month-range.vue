@@ -268,15 +268,23 @@
 
                 if (reset) this.isTime = false;
             },
-            prevYear () {
-                const date = this.date;
-                date.setFullYear(date.getFullYear() - 1);
-                this.resetDate();
+            prevYear (direction) {
+                if (this[`${direction}CurrentView`] === 'year') {
+                    this.$refs[`${direction}YearTable`].prevTenYear();
+                }else{
+                    const date = this.date;
+                    date.setFullYear(date.getFullYear() - 1);
+                    this.resetDate();
+                }
             },
-            nextYear () {
-                const date = this.date;
-                date.setFullYear(date.getFullYear() + 1);
-                this.resetDate();
+            nextYear (direction) {
+                if (this[`${direction}CurrentView`] === 'year') {
+                    this.$refs[`${direction}YearTable`].prevTenYear();
+                }else{
+                    const date = this.date;
+                    date.setFullYear(date.getFullYear() + 1);
+                    this.resetDate();
+                }
             },
             prevMonth () {
                 this.date = prevMonth(this.date);
@@ -291,21 +299,20 @@
                 this.handleYearPick(year, close, 'right');
             },
             handleYearPick (year, close, direction) {
+                //月区间----选年的时候 统一左右时间
                 this[`${direction}TableYear`] = year;
                 if (!close) return;
-
+                this.date.setYear(year);
+                this.resetDate();
                 this[`${direction}CurrentView`] = 'month';
             },
             handleLeftMonthPick (month) {
-//                console.log('handleLeftMonthPick');
                 this.handleMonthPick(month, 'left');
             },
             handleRightMonthPick (month){
                 this.handleMonthPick(month, 'right');
             },
             handleMonthPick (month, direction) {
-//                console.log('handleMonthPick');
-//                console.log(month);
                 let year = this[`${direction}TableYear`];
                 if (direction === 'right') {
                     if (month === 0) {

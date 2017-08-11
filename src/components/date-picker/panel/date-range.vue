@@ -358,6 +358,7 @@
                 this.handleMonthPick(month, 'right');
             },
             handleMonthPick (month, direction) {
+                //日区间 --- 选月的时候再统一左右日历的时间
                 let year = this[`${direction}TableYear`];
                 if (direction === 'right') {
                     if (month === 0) {
