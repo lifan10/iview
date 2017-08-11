@@ -303,7 +303,11 @@
                 //月区间----选年的时候 统一左右时间
                 this[`${direction}TableYear`] = year;
                 if (!close) return;
-                this.date.setYear(year);
+                if(direction=='right'){
+                    this.date.setYear(year-1);
+                }else{
+                    this.date.setYear(year);
+                }
                 this.resetDate();
                 this[`${direction}CurrentView`] = 'month';
             },

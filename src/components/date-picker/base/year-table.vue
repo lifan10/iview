@@ -66,6 +66,7 @@
                 this.$emit('on-pick', Number(this.year) - 10, false);
             },
             handleClick (event) {
+                console.log('year-table-mark');
                 const target = event.target;
                 if (target.tagName === 'EM') {
                     const cell = this.cells[parseInt(event.target.getAttribute('index'))];
