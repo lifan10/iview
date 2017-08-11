@@ -46,9 +46,7 @@
                     cell.selected = Number(this.month) === i;
                     cells.push(cell);
                 }
-
                 return cells;
-                console.log(cells);
             }
         },
         methods: {

@@ -174,7 +174,7 @@
                 return this.date.getMonth();
             },
             leftMonthLabel () {
-                const month = this.leftMonth -1;
+                const month = this.leftMonth +1;
                 return this.t(`i.datepicker.month${month}`);
             },
             rightYear () {
@@ -207,6 +207,7 @@
                 const month = this.rightMonth + 1;
                 return this.t(`i.datepicker.month${month}`);
             },
+            //根据左边日历的时间 计算右边日历的时间
             rightDate () {
                 const newDate = new Date(this.date);
                 const year = newDate.getFullYear()+1;

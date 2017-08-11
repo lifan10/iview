@@ -85,7 +85,6 @@
                     cell.end = this.maxDate && month === maxMonth;
                     cells.push(cell);
                 }
-                console.log(cells);
                 return cells;
             }
         },
