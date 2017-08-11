@@ -7,11 +7,7 @@
     import { deepCopy } from '../../../utils/assist';
     import Locale from '../../../mixins/locale';
     const prefixCls = 'ivu-date-picker-cells';
-//    const clearHours = function (time) {
-//        const cloneDate = new Date(time);
-//        cloneDate.setHours(0, 0, 0, 0);
-//        return cloneDate.getTime();
-//    };
+    //参照date-table里的方法写的
     const clearMonth = function (time) {
         const cloneDate = new Date(time);
         cloneDate.setDate(1);

@@ -279,7 +279,7 @@
             },
             nextYear (direction) {
                 if (this[`${direction}CurrentView`] === 'year') {
-                    this.$refs[`${direction}YearTable`].prevTenYear();
+                    this.$refs[`${direction}YearTable`].nextTenYear();
                 }else{
                     const date = this.date;
                     date.setFullYear(date.getFullYear() + 1);
@@ -331,7 +331,6 @@
             showYearPicker (direction) {
                 this[`${direction}CurrentView`] = 'year';
                 this[`${direction}TableYear`] = this[`${direction}Year`];
-                console.log(this.rightCurrentView);
             },
             showMonthPicker (direction) {
                 this[`${direction}CurrentView`] = 'month';
