@@ -6,7 +6,7 @@
                 v-for="shortcut in shortcuts"
                 @click="handleShortcutClick(shortcut)">{{ shortcut.text }}</div>
         </div>
-        <div :class="[prefixCls + '-body']" style=background-color:pink>
+        <div :class="[prefixCls + '-body']">
             <div :class="[prefixCls + '-content', prefixCls + '-content-left']" v-show="!isTime">
                 <div :class="[datePrefixCls + '-header']" v-show="leftCurrentView !== 'time'">
                     <span
