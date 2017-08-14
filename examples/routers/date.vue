@@ -5,6 +5,7 @@
         <Date-picker type="month" placeholder="月历" style="width: 200px"></Date-picker>
         <Date-picker transfer type="monthrange" placeholder="月历区间" style="width: 200px"></Date-picker>
         <Date-picker transfer type="year" placeholder="年历" style="width: 200px"></Date-picker>
+        <Date-picker transfer type="week" placeholder="周历" style="width: 200px"></Date-picker>
     </div>
 </template>
 <script>

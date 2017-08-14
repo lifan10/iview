@@ -1,6 +1,7 @@
 import Picker from '../picker.vue';
 import DatePanel from '../panel/date.vue';
 import DateRangePanel from '../panel/date-range.vue';
+import WeekPanel from '../panel/week.vue';
 import MonthRangePanel from '../panel/month-range.vue';
 
 const getPanel = function (type) {
@@ -8,6 +9,8 @@ const getPanel = function (type) {
         return DateRangePanel;
     }else if(type === 'monthrange') {
         return MonthRangePanel;
+    }else if(type=='week'){
+        return WeekPanel;
     }
     return DatePanel;
 };
@@ -19,7 +22,7 @@ export default {
     props: {
         type: {
             validator (value) {
-                return oneOf(value, ['year', 'month', 'date', 'daterange', 'datetime', 'datetimerange','monthrange']);
+                return oneOf(value, ['year', 'month', 'week', 'date', 'daterange', 'datetime', 'datetimerange','monthrange']);
             },
             default: 'date'
         },
@@ -27,7 +30,7 @@ export default {
     },
     created () {
         if (!this.currentValue) {
-            if (this.type === 'daterange' || this.type === 'datetimerange' || this.type === 'monthrange') {
+            if (this.type === 'daterange' || this.type === 'datetimerange' || this.type === 'monthrange'|| this.type === 'week') {
                 this.currentValue = ['',''];
             } else {
                 this.currentValue = '';
