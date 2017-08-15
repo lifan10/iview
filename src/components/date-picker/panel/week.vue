@@ -244,7 +244,7 @@
                 this.resetDate();
             },
             handleMonthPick (month) {
-                console.log('date.vue:handleMonthPick');
+//                console.log('date.vue:handleMonthPick');
                 this.month = month;
                 const selectionMode = this.selectionMode;
                 if (selectionMode !== 'month') {
@@ -256,12 +256,12 @@
                     this.year && this.date.setFullYear(this.year);
                     this.resetDate();
                     const value = new Date(this.date.getFullYear(), month, 1);
-                    console.log(value);
+//                    console.log(value);
                     this.$emit('on-pick', value);
                 }
             },
             handleDatePick (value) {
-                console.log('handleDatePick');
+//                console.log('handleDatePick');
                 if (this.selectionMode === 'day') {
                     this.$emit('on-pick', new Date(value.getTime()));
                     this.date.setFullYear(value.getFullYear());

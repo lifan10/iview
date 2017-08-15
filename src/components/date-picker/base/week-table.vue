@@ -1,15 +1,17 @@
 <template>
     <div :class="classes" @click="handleClick" @mousemove="handleMouseMove">
-        <div :class="[prefixCls + '-header']">
-            <span>{{ t('i.datepicker.weeks.sun') }}</span><span>{{ t('i.datepicker.weeks.mon') }}</span><span>{{ t('i.datepicker.weeks.tue') }}</span><span>{{ t('i.datepicker.weeks.wed') }}</span><span>{{ t('i.datepicker.weeks.thu') }}</span><span>{{ t('i.datepicker.weeks.fri') }}</span><span>{{ t('i.datepicker.weeks.sat') }}</span>
-        </div>
-        <span :class="getCellCls(cell)" v-for="(cell, index) in readCells"><em :index="index" :indexOfWeek='cell.indexOfWeek'>{{ cell.text }}</em></span>
+        <div v-for="(cell, index) in cells"><span style='width: 60px'>第{{cell.week}}周</span><span style='width: 136px'>{{cell.firstDayOfWeek}}~{{cell.endDayOfWeek}}</span></div>
+        <!--<div :class="[prefixCls + '-header']">-->
+            <!--<span>{{ t('i.datepicker.weeks.sun') }}</span><span>{{ t('i.datepicker.weeks.mon') }}</span><span>{{ t('i.datepicker.weeks.tue') }}</span><span>{{ t('i.datepicker.weeks.wed') }}</span><span>{{ t('i.datepicker.weeks.thu') }}</span><span>{{ t('i.datepicker.weeks.fri') }}</span><span>{{ t('i.datepicker.weeks.sat') }}</span>-->
+        <!--</div>-->
+        <!--<span :class="getCellCls(cell)" v-for="(cell, index) in readCells"><em :index="index" :indexOfWeek='cell.indexOfWeek'>{{ cell.text }}</em></span>-->
     </div>
 </template>
 <script>
     import { getFirstDayOfMonth, getDayCountOfMonth } from '../util';
     import { deepCopy } from '../../../utils/assist';
     import Locale from '../../../mixins/locale';
+    import moment from 'moment';
 
     const prefixCls = 'ivu-date-picker-cells';
 
@@ -44,7 +46,6 @@
         data () {
             return {
                 prefixCls: prefixCls,
-                readCells: []
             };
         },
         watch: {
@@ -68,12 +69,6 @@
                     this.markRange(newVal);
                 }
             },
-            cells: {
-                handler (cells) {
-                    this.readCells = cells;
-                },
-                immediate: true
-            }
         },
         computed: {
             classes () {
@@ -82,122 +77,31 @@
                 ];
             },
             cells () {
-                console.log('this.year + this.month'+this.year+'年' + this.month+'月');
                 const date = new Date(this.year, this.month, 1);
-                let day = getFirstDayOfMonth(date);    // day of first day
-                day = (day === 0 ? 7 : day);
-                const today = clearHours(new Date());    // timestamp of today
-                const selectDay = clearHours(new Date(this.value));    // timestamp of selected day
-                const minDay = clearHours(new Date(this.minDate));
-                const maxDay = clearHours(new Date(this.maxDate));
-                console.log('date-table.vue---cells():'+this.value);
+                console.log('8.15 week-test '+this.year+'年' + this.month+'月'+date);
+//                let day = getFirstDayOfMonth(date);    // day of first day
+//                day = (day === 0 ? 7 : day);
+//                const today = clearHours(new Date());    // timestamp of today
+//                const selectDay = clearHours(new Date(this.value));    // timestamp of selected day
+//                const minDay = clearHours(new Date(this.minDate));
+//                const maxDay = clearHours(new Date(this.maxDate));
+////                console.log('date-table.vue---cells():'+this.value);
+//
+//                const dateCountOfMonth = getDayCountOfMonth(date.getFullYear(), date.getMonth());
+//                const dateCountOfLastMonth = getDayCountOfMonth(date.getFullYear(), (date.getMonth() === 0 ? 11 : date.getMonth() - 1));
+//
+//                const disabledDate = this.disabledDate;
+                return [
+                    {'week':'1','firstDayOfWeek':'2017-07-31','endDayOfWeek':'2017-08-06'},
+                    {'week':'2','firstDayOfWeek':'2017-08-07','endDayOfWeek':'2017-08-13'},
+                    {'week':'3','firstDayOfWeek':'2017-08-14','endDayOfWeek':'2017-08-20'},
+                    {'week':'4','firstDayOfWeek':'2017-08-21','endDayOfWeek':'2017-08-27'},
+                    {'week':'5','firstDayOfWeek':'2017-08-28','endDayOfWeek':'2017-09-03'},
+                ]
 
-                const dateCountOfMonth = getDayCountOfMonth(date.getFullYear(), date.getMonth());
-                const dateCountOfLastMonth = getDayCountOfMonth(date.getFullYear(), (date.getMonth() === 0 ? 11 : date.getMonth() - 1));
+//
 
-                const disabledDate = this.disabledDate;
-
-                let cells = [];
-                const cell_tmpl = {
-                    text: '',
-                    type: '',
-                    selected: false,
-                    disabled: false,
-                    range: false,
-                    start: false,
-                    end: false,
-                    indexOfWeek:''
-                };
-
-                //上一个月的日期
-                if (day !== 7) {
-                    for (let i = 0; i < day; i++) {
-                        const cell = deepCopy(cell_tmpl);
-                        cell.type = 'prev-month';
-                        cell.text = dateCountOfLastMonth - (day - 1) + i;
-
-                        let prevMonth = this.month - 1;
-                        let prevYear = this.year;
-                        if (this.month === 0) {
-                            prevMonth = 11;
-                            prevYear -= 1;
-                        }
-                        const time = clearHours(new Date(prevYear, prevMonth, cell.text));
-                        let weekTest=new Date(prevYear, prevMonth, cell.text).getDay();
-                        cell.indexOfWeek=weekTest;
-                        cell.disabled = typeof disabledDate === 'function' && disabledDate(new Date(time));
-                        cell.range=true;
-                        if(weekTest==0){
-                            cell.selected=true;
-                            cell.start=true;
-                        }else if(weekTest==6){
-                            cell.selected=true;
-                            cell.end=true;
-                        } else{
-                            cell.range=true;
-                            cell.selected=false;
-                        }
-                        cells.push(cell);
-                    }
-                }
-                //本月的日期
-                for (let i = 1; i <= dateCountOfMonth; i++) {
-                    const cell = deepCopy(cell_tmpl);
-                    const time = clearHours(new Date(this.year, this.month, i));
-                    let weekTest=new Date(this.year, this.month, i).getDay();
-                    cell.indexOfWeek=weekTest;
-                    cell.type = time === today ? 'today' : 'normal';
-                    cell.text = i;
-                    cell.selected = time === selectDay;
-                    cell.disabled = typeof disabledDate === 'function' && disabledDate(new Date(time));
-                    if(weekTest==0){
-                        cell.selected=true;
-                        cell.start=true;
-                    }else if(weekTest==6){
-                        cell.selected=true;
-                        cell.end=true;
-                    } else{
-                        cell.range=true;
-                        cell.selected=false;
-                    }
-//                    cell.range = time >= minDay && time <= maxDay;
-//                    cell.start = this.minDate && time === minDay;
-//                    cell.end = this.maxDate && time === maxDay;
-
-                    cells.push(cell);
-                }
-                //下一个月的日期
-                const nextMonthCount = 42 - cells.length;
-                for (let i = 1; i <= nextMonthCount; i++) {
-                    const cell = deepCopy(cell_tmpl);
-                    cell.type = 'next-month';
-                    cell.text = i;
-
-                    let nextMonth = this.month + 1;
-                    let nextYear = this.year;
-                    if (this.month === 11) {
-                        nextMonth = 0;
-                        nextYear += 1;
-                    }
-                    const time = clearHours(new Date(nextYear, nextMonth, cell.text));
-                    let weekTest=new Date(nextYear, nextMonth, cell.text).getDay();
-                    cell.indexOfWeek=weekTest;
-                    cell.disabled = typeof disabledDate === 'function' && disabledDate(new Date(time));
-                    if(weekTest==0){
-                        cell.selected=true;
-                        cell.start=true;
-                    }else if(weekTest==6){
-                        cell.selected=true;
-                        cell.end=true;
-                    } else{
-                        cell.range=true;
-                        cell.selected=false;
-                    }
-                    cells.push(cell);
-                }
-//                console.log('date-table.vue---cells():'+this.value);
-
-                return cells;
+//                return cells;
             }
         },
         methods: {
@@ -227,7 +131,7 @@
                     }
                 }
                 let weekTest=new Date(year, month, day, hours, minutes, seconds).getDay();
-                console.log('8.14---week---'+new Date(year, month, day, hours, minutes, seconds)+weekTest);
+//                console.log('8.14---week---'+new Date(year, month, day, hours, minutes, seconds)+weekTest);
                 return new Date(year, month, day, hours, minutes, seconds);
             },
             handleClick (event) {
@@ -322,3 +226,8 @@
         }
     };
 </script>
+<style scoped>
+    span{
+        width: 60px;
+    }
+</style>
