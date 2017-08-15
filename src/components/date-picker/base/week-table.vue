@@ -1,6 +1,6 @@
 <template>
     <div :class="classes" @click="handleClick" @mousemove="handleMouseMove">
-        <div v-for="(cell, index) in cells"><span style='width: 60px'>第{{cell.week}}周</span><span style='width: 136px'>{{cell.firstDayOfWeek}}~{{cell.endDayOfWeek}}</span></div>
+        <div v-for="(cell, index) in cells"><span style='width: 60px'>第{{cell.count}}周</span><span style='width: 136px'>{{cell.firstDayOfWeek}}~{{cell.endDayOfWeek}}</span></div>
         <!--<div :class="[prefixCls + '-header']">-->
             <!--<span>{{ t('i.datepicker.weeks.sun') }}</span><span>{{ t('i.datepicker.weeks.mon') }}</span><span>{{ t('i.datepicker.weeks.tue') }}</span><span>{{ t('i.datepicker.weeks.wed') }}</span><span>{{ t('i.datepicker.weeks.thu') }}</span><span>{{ t('i.datepicker.weeks.fri') }}</span><span>{{ t('i.datepicker.weeks.sat') }}</span>-->
         <!--</div>-->
@@ -77,31 +77,39 @@
                 ];
             },
             cells () {
+                let cellsArray=[];
                 const date = new Date(this.year, this.month, 1);
-                console.log('8.15 week-test '+this.year+'年' + this.month+'月'+date);
-//                let day = getFirstDayOfMonth(date);    // day of first day
-//                day = (day === 0 ? 7 : day);
-//                const today = clearHours(new Date());    // timestamp of today
-//                const selectDay = clearHours(new Date(this.value));    // timestamp of selected day
-//                const minDay = clearHours(new Date(this.minDate));
-//                const maxDay = clearHours(new Date(this.maxDate));
-////                console.log('date-table.vue---cells():'+this.value);
-//
-//                const dateCountOfMonth = getDayCountOfMonth(date.getFullYear(), date.getMonth());
-//                const dateCountOfLastMonth = getDayCountOfMonth(date.getFullYear(), (date.getMonth() === 0 ? 11 : date.getMonth() - 1));
-//
-//                const disabledDate = this.disabledDate;
-                return [
-                    {'week':'1','firstDayOfWeek':'2017-07-31','endDayOfWeek':'2017-08-06'},
-                    {'week':'2','firstDayOfWeek':'2017-08-07','endDayOfWeek':'2017-08-13'},
-                    {'week':'3','firstDayOfWeek':'2017-08-14','endDayOfWeek':'2017-08-20'},
-                    {'week':'4','firstDayOfWeek':'2017-08-21','endDayOfWeek':'2017-08-27'},
-                    {'week':'5','firstDayOfWeek':'2017-08-28','endDayOfWeek':'2017-09-03'},
-                ]
+                let day = getFirstDayOfMonth(date);    // day of first day
+                var firstDay = moment(date,'YYYY-MM-DD').startOf('month'),
+//                        monthDay = fisrtDay.format('d') == '0'?'7':fisrtDay.format('d'),
+                        monthDay = getFirstDayOfMonth(date),
+                        month = firstDay.format('MM'),
+                        week,temp = '',count = 1;
+                if(monthDay != "1"){
+                    week = moment(firstDay.format('YYYY-MM-DD'),'YYYY-MM-DD').add('day',7-monthDay+1);
+                    console.log(week);
+                }else{
+                    week = moment(firstDay.format('YYYY-MM-DD'),'YYYY-MM-DD');
+                    console.log(week);
+                }
+                while(week.startOf('week').format('MM') == month){
+                    var cell={};
+                    cell.count=count;
+                    cell.firstDayOfWeek=week.startOf('week').format('YYYY-MM-DD');
+                    cell.endDayOfWeek=week.endOf('week').format('YYYY-MM-DD');
+                    week = week.add('day',7);
+                    cellsArray.push(cell);
+                    count++;
+                }
+                return cellsArray;
+//                [
+//                    {'week':'1','firstDayOfWeek':'2017-07-31','endDayOfWeek':'2017-08-06'},
+//                    {'week':'2','firstDayOfWeek':'2017-08-07','endDayOfWeek':'2017-08-13'},
+//                    {'week':'3','firstDayOfWeek':'2017-08-14','endDayOfWeek':'2017-08-20'},
+//                    {'week':'4','firstDayOfWeek':'2017-08-21','endDayOfWeek':'2017-08-27'},
+//                    {'week':'5','firstDayOfWeek':'2017-08-28','endDayOfWeek':'2017-09-03'}
+//                ];
 
-//
-
-//                return cells;
             }
         },
         methods: {
