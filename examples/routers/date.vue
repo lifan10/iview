@@ -2,10 +2,10 @@
     <div>
         <Date-picker type="date" placeholder="日历" style="width: 200px"></Date-picker>
         <Date-picker type="daterange" placeholder="日历区间" style="width: 200px"></Date-picker>
-        <Date-picker type="month" placeholder="月历" style="width: 200px"></Date-picker>
+        <Date-picker type="month" placeholder="月历" style="width: 200px" value='2017-01'></Date-picker>
         <Date-picker transfer type="monthrange" placeholder="月历区间" style="width: 200px"></Date-picker>
         <Date-picker transfer type="year" placeholder="年历" style="width: 200px"></Date-picker>
-        <Date-picker transfer type="week" placeholder="周历" style="width: 200px"></Date-picker>
+        <Date-picker transfer type="week" placeholder="周历" style="width: 200px" value='2017-01-01'></Date-picker>
     </div>
 </template>
 <script>

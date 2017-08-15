@@ -30,7 +30,7 @@ export default {
     },
     created () {
         if (!this.currentValue) {
-            if (this.type === 'daterange' || this.type === 'datetimerange' || this.type === 'monthrange'|| this.type === 'week') {
+            if (this.type === 'daterange' || this.type === 'datetimerange' || this.type === 'monthrange') {
                 this.currentValue = ['',''];
             } else {
                 this.currentValue = '';
