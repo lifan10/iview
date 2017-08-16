@@ -264,8 +264,8 @@
                 });
             },
             getCellCls (cell) {
-//                console.log(cell);
-                return [
+                console.log('date-table'+cell);
+                let arr=[
                     `${prefixCls}-cell`,
                     {
                         [`${prefixCls}-cell-selected`]: cell.selected || cell.start || cell.end,
@@ -276,6 +276,7 @@
                         [`${prefixCls}-cell-range`]: cell.range && !cell.start && !cell.end
                     }
                 ];
+                return arr;
             },
 
         }

@@ -79,7 +79,14 @@
                 var firstDay = moment(date,'YYYY-MM-DD').startOf('month'),//这个月的第一天
                     monthDay = getFirstDayOfMonth(date),//这个月的第一天在当前周的第几天
                     month = firstDay.format('MM'),//当前月份
-                    week,count = 1,nowDate=new Date(this.value);
+                    week,count = 1, nowDate;
+                //今天的日期或者是指定的value值
+                if(this.value){
+                    let valArr=this.value.split('~');
+                    nowDate=clearHours(new Date(valArr[0]));
+                }else{
+                    nowDate=clearHours(new Date());
+                }
                 if(monthDay != "1"){
                     week = moment(firstDay.format('YYYY-MM-DD'),'YYYY-MM-DD').add('day',7-monthDay+1);
                     console.log(week);
@@ -87,13 +94,14 @@
                     week = moment(firstDay.format('YYYY-MM-DD'),'YYYY-MM-DD');
                     console.log(week);
                 }
+                //循环本月的几个周
                 while(week.startOf('week').format('MM') == month){
                     var cell={};
                     cell.count=count;
                     cell.firstDayOfWeek=week.startOf('week').format('YYYY-MM-DD');
                     cell.endDayOfWeek=week.endOf('week').format('YYYY-MM-DD');
                     //
-                    if(clearHours(nowDate)>clearHours(cell.firstDayOfWeek)&&clearHours(nowDate)<clearHours(cell.endDayOfWeek)){
+                    if(nowDate==clearHours(cell.endDayOfWeek)||nowDate==clearHours(cell.firstDayOfWeek)||nowDate>clearHours(cell.firstDayOfWeek)&&nowDate<clearHours(cell.endDayOfWeek)){
                         cell.selected=true;
                     }else{
                         cell.selected=false;
@@ -178,13 +186,13 @@
                 });
             },
             getCellCls (cell) {
+                console.log('week-table---getCellCls'+cell);
                 return [
                     {
-                        [`one-week-selected`]: cell.selected ,
+                        [`one-week-selected`]: cell.selected
                     }
                 ];
-            },
-
+            }
         }
     };
 </script>
