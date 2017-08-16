@@ -39,7 +39,7 @@
                     :value="value"
                     :selection-mode="selectionMode"
                     :disabled-date="disabledDate"
-                    @on-pick="handleDatePick"
+                    @on-pick="handleWeekPick"
                     @on-pick-click="handlePickClick"></date-table>
                 <year-table
                     ref="yearTable"
@@ -105,7 +105,7 @@
                 date: initTimeDate(),
                 value: '',
                 showTime: false,
-                selectionMode: 'day',
+                selectionMode: 'week',
                 disabledDate: '',
                 year: null,
                 month: null,
@@ -139,14 +139,16 @@
             }
         },
         watch: {
+            //观察到value有值
             value (newVal) {
-                console.log(newVal);
+                console.log('8.16---week.vue---watch value'+newVal);
                 if (!newVal) return;
-                newVal = new Date(newVal);
-                if (!isNaN(newVal)) {
-                    this.date = newVal;
-                    this.year = newVal.getFullYear();
-                    this.month = newVal.getMonth();
+                let valArr = newVal.split('~');
+                let mondayOfWeek=new Date(valArr[0]);//本周的周一
+                if (!isNaN(mondayOfWeek)) {
+                    this.month=mondayOfWeek.getMonth();
+                    this.date = mondayOfWeek;
+                    this.year = mondayOfWeek.getFullYear();
                 }
                 if (this.showTime) this.$refs.timePicker.value = newVal;
             },
@@ -261,15 +263,11 @@
                     this.$emit('on-pick', value);
                 }
             },
-            handleDatePick (value) {
-                console.log('handleDatePick');
-                if (this.selectionMode === 'day') {
-                    this.$emit('on-pick', new Date(value.getTime()));
-                    this.date.setFullYear(value.getFullYear());
-                    this.date.setMonth(value.getMonth());
-                    this.date.setDate(value.getDate());
-                }
-
+            handleWeekPick (value) {
+                this.value=value;
+                this.$emit('on-pick',value);
+                this.date.setFullYear(this.year);
+                this.date.setMonth(this.month);
                 this.resetDate();
             },
             handleTimePick (date) {

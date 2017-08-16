@@ -25,7 +25,7 @@
             year: {},
             month: {},
             selectionMode: {
-                default: 'day'
+                default: 'week'
             },
             disabledDate: {},
             minDate: {},
@@ -139,7 +139,8 @@
                 const target = event.target;
                 if (target.tagName === 'SPAN') {
                     cell.selected=true;
-                    alert(cell.count+cell.firstDayOfWeek+cell.endDayOfWeek)
+                    //把选中的周传给week.vue
+                    this.$emit('on-pick', cell.firstDayOfWeek+'~'+cell.endDayOfWeek);
                 }
                 this.$emit('on-pick-click');
             },
