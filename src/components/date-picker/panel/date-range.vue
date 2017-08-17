@@ -186,7 +186,6 @@
                 ];
             },
             leftYear () {
-                console.log('leftyear------'+this.date.getFullYear());
                 return this.date.getFullYear();
             },
             leftTableDate () {
@@ -274,7 +273,6 @@
                     if (this.minDate) this.date = new Date(this.minDate);
                 }
                 if (this.showTime) this.$refs.timePicker.value = newVal;
-                console.log('date-range-----watch:value()'+this.value+'this.showTime'+this.showTime);
             },
             minDate (val) {
                 if (this.showTime) this.$refs.timePicker.date = val;
@@ -385,7 +383,6 @@
                 this.$emit('on-pick', [this.minDate, this.maxDate], visible);
             },
             handleRangePick (val, close = true) {
-//                console.log(this.value);
                 if (this.maxDate === val.maxDate && this.minDate === val.minDate) return;
 
                 this.minDate = val.minDate;
@@ -406,7 +403,6 @@
                 this.isTime = !this.isTime;
             },
             handleTimePick (date) {
-                console.log('date-range.vue:handleTimePick');
                 this.minDate = date[0];
                 this.maxDate = date[1];
                 this.handleConfirm(false);

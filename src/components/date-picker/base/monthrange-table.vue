@@ -51,7 +51,6 @@
                 ];
             },
             cells () {
-                console.log('cells()----->'+this.year+this.month+this.value+this.minDate+this.maxDate);
                 const selectMonth = clearMonth(new Date(this.value));    // timestamp of selected day
                 const minMonth = clearMonth(new Date(this.minDate));
                 const maxMonth = clearMonth(new Date(this.maxDate));
@@ -129,7 +128,6 @@
                 ];
             },
             handleClick (event) {
-                console.log('monthrange-table.vue:handleClick');
                 const target = event.target;
                 if (target.tagName === 'EM') {
                     const index = parseInt(event.target.getAttribute('index'));
@@ -201,14 +199,11 @@
             markRange (maxDate) {
                 const minDate = this.minDate;
                 if (!maxDate) maxDate = this.maxDate;
-                //console.log("monthrange-table.vue:markRange --->minDate:" + minDate + "--->maxDate:" + maxDate);
-//                console.log('monthrange-table:markRange'+this.year + this.month);
 
 //                const minDay = clearHours(new Date(minDate));
 //                const maxDay = clearHours(new Date(maxDate));
                 const minMonth = clearMonth(new Date(minDate));
                 const maxMonth = clearMonth(new Date(maxDate));
-//                console.log(this.year + this.month);
 
                 this.cells.forEach(cell => {
                     if (cell.type === 'today' || cell.type === 'normal') {
@@ -217,11 +212,8 @@
                         cell.range = time >= minMonth && time <= maxMonth;
                         cell.start = minDate && time === minMonth;
                         cell.end = maxDate && time === maxMonth;
-//                        console.log("xxxxxxxxx --->minDate:" + minDate + "--->maxDate:" + maxDate + "--->time:" + time);
-//                        console.log("xxxxxxxxx --->minMonth:" + minMonth + "--->maxMonth:" + maxMonth + "--->time:" + time);
                     }
                 });
-                console.log(this.cells);
             },
             handleMouseMove (event) {
                 if (!this.rangeState.selecting) return;
@@ -231,7 +223,6 @@
                     rangeState: this.rangeState
                 });
 
-                //console.log("handleMouseMove--->" + !this.rangeState.selecting);
                 const target = event.target;
                 if (target.tagName === 'EM') {
                     const cell = this.cells[parseInt(event.target.getAttribute('index'))];

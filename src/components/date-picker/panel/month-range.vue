@@ -232,7 +232,6 @@
                 }
                 if (this.showTime) this.$refs.timePicker.value = newVal;
                 this.value=newVal;
-//                console.log('month-range-----watch:value()'+this.value);
             },
             minDate (val) {
                 if (this.showTime) this.$refs.timePicker.date = val;
@@ -345,7 +344,6 @@
             },
             //on-pick
             handleRangePick (val, close = true) {
-                console.log("month-range.vue:--->handleRangePick--->this.mimDate:"+this.minDate+"this.maxDate:"+this.maxDate);
                 if (this.maxDate === val.maxDate && this.minDate === val.minDate) return;
 
                 this.minDate = val.minDate;
@@ -358,7 +356,6 @@
                 this.minDate = val.minDate;
                 this.maxDate = val.maxDate;
                 this.rangeState = val.rangeState;
-                //console.log(val);
             },
             handleToggleTime () {
                 this.isTime = !this.isTime;

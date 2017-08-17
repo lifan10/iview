@@ -58,10 +58,8 @@
                 }
                 if(monthDay != "1"){
                     week = moment(firstDay.format('YYYY-MM-DD'),'YYYY-MM-DD').add('day',7-monthDay+1);
-                    console.log(week);
                 }else{
                     week = moment(firstDay.format('YYYY-MM-DD'),'YYYY-MM-DD');
-                    console.log(week);
                 }
                 //循环本月的几个周
                 while(week.startOf('week').format('MM') == month){
@@ -94,7 +92,6 @@
                 this.$emit('on-pick-click');
             },
             getCellCls (cell) {
-                console.log('week-table---getCellCls'+cell);
                 return [
                     {
                         [`one-week-selected`]: cell.selected,

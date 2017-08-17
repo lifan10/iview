@@ -31,7 +31,7 @@
                     v-show="currentView === 'date'"><Icon type="ios-arrow-right"></Icon></span>
             </div>
             <div :class="[prefixCls + '-content']">
-                <date-table
+                <week-table
                     v-show="currentView === 'date'"
                     :year="year"
                     :month="month"
@@ -40,7 +40,7 @@
                     :selection-mode="selectionMode"
                     :disabled-date="disabledDate"
                     @on-pick="handleWeekPick"
-                    @on-pick-click="handlePickClick"></date-table>
+                    @on-pick-click="handlePickClick"></week-table>
                 <year-table
                     ref="yearTable"
                     v-show="currentView === 'year'"
@@ -78,7 +78,8 @@
 </template>
 <script>
     import Icon from '../../icon/icon.vue';
-    import DateTable from '../base/week-table.vue';
+    import WeekTable from '../base/week-table.vue';
+    import DateTable from '../base/date-table.vue';
     import YearTable from '../base/year-table.vue';
     import MonthTable from '../base/month-table.vue';
     import TimePicker from './time.vue';
@@ -95,7 +96,7 @@
     export default {
         name: 'DatePicker',
         mixins: [ Mixin, Locale ],
-        components: { Icon, DateTable, YearTable, MonthTable, TimePicker, Confirm },
+        components: { Icon, DateTable,WeekTable, YearTable, MonthTable, TimePicker, Confirm },
         data () {
             return {
                 prefixCls: prefixCls,
@@ -141,7 +142,6 @@
         watch: {
             //观察到value有值
             value (newVal) {
-                console.log('8.16---week.vue---watch value'+newVal);
                 if (!newVal) return;
                 let valArr = newVal.split('~');
                 let mondayOfWeek=new Date(valArr[0]);//本周的周一
@@ -247,7 +247,6 @@
                 this.resetDate();
             },
             handleMonthPick (month) {
-                console.log('date.vue:handleMonthPick');
                 this.month = month;
                 const selectionMode = this.selectionMode;
                 if (selectionMode !== 'month') {
@@ -259,7 +258,6 @@
                     this.year && this.date.setFullYear(this.year);
                     this.resetDate();
                     const value = new Date(this.date.getFullYear(), month, 1);
-                    console.log(value);
                     this.$emit('on-pick', value);
                 }
             },

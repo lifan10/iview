@@ -155,7 +155,6 @@
                     cell.disabled = typeof disabledDate === 'function' && disabledDate(new Date(time));
                     cells.push(cell);
                 }
-//                console.log('date-table.vue---cells():'+this.value);
 
                 return cells;
             }
@@ -190,7 +189,6 @@
                 return new Date(year, month, day, hours, minutes, seconds);
             },
             handleClick (event) {
-//                console.log('date-table.vue:handleClick');
                 const target = event.target;
                 if (target.tagName === 'EM') {
                     const cell = this.cells[parseInt(event.target.getAttribute('index'))];
@@ -221,7 +219,6 @@
                             const minDate = new Date(newDate.getTime());
                             this.rangeState.selecting = true;
                             this.markRange(this.minDate);
-//                            console.log(this.cells);
                             this.$emit('on-pick', {minDate, maxDate: this.maxDate}, false);
                         }
                     } else {
@@ -247,7 +244,6 @@
                 }
             },
             markRange (maxDate) {
-//                console.log('date-table.vue:markRange');
                 const minDate = this.minDate;
                 if (!maxDate) maxDate = this.maxDate;
 
@@ -264,7 +260,6 @@
                 });
             },
             getCellCls (cell) {
-                console.log('date-table'+cell);
                 let arr=[
                     `${prefixCls}-cell`,
                     {
