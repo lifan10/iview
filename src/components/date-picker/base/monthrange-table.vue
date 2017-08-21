@@ -40,7 +40,6 @@
             return {
                 prefixCls: prefixCls,
                 readCells: [],
-                selectDate:''
             };
         },
         computed: {
@@ -135,7 +134,6 @@
                     if (cell.disabled) return;
 
                     const newDate = this.getDateOfCell(cell);
-                    this.selectDate = this.getDateOfCell(cell);
                     if(this.selectionMode=='range'){
                         if (this.minDate && this.maxDate) {//有最小最大---- 保留上选择的最大最小，从新选则，选最小
                             const minDate = new Date(newDate.getTime());
