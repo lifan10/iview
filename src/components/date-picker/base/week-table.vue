@@ -1,6 +1,8 @@
 <template>
     <div :class="classes">
-        <div @click="handleClick(cell)" :class=getCellCls(cell) v-for="(cell, index) in cells" style='line-height: 24px;' class='one-week'><span style='width: 50px;padding-left: 10px'>第{{cell.count}}周</span><span style='width: 145px'>{{cell.firstDayOfWeek}}~{{cell.endDayOfWeek}}</span></div>
+        <div @click="handleClick(cell)" :class=getCellCls(cell) v-for="(cell, index) in cells" class='one-week'>
+            <span style='width: 50px;padding-left: 10px'>第{{cell.count}}周</span><span style='width: 145px'>{{cell.firstDayOfWeekLabel}}~{{cell.endDayOfWeekLabel}}</span>
+        </div>
     </div>
 </template>
 <script>
@@ -66,7 +68,9 @@
                     var cell={};
                     cell.count=count;
                     cell.firstDayOfWeek=week.startOf('week').format('YYYY-MM-DD');
+                    cell.firstDayOfWeekLabel=week.startOf('week').format('MM-DD');
                     cell.endDayOfWeek=week.endOf('week').format('YYYY-MM-DD');
+                    cell.endDayOfWeekLabel=week.endOf('week').format('MM-DD');
                     const time=clearHours(cell.firstDayOfWeek);
                     cell.disabled=typeof disabledDate === 'function' && disabledDate(new Date(time));
                     if(nowDate==clearHours(cell.endDayOfWeek)||nowDate==clearHours(cell.firstDayOfWeek)||nowDate>clearHours(cell.firstDayOfWeek)&&nowDate<clearHours(cell.endDayOfWeek)){
@@ -106,6 +110,8 @@
 <style>
     .one-week{
         border-radius: 3px;
+        line-height: 35px;
+        text-align: center;
     }
     /*不选择 不disabled时才有hover效果*/
     .one-week-range:hover{

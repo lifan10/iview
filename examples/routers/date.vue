@@ -1,10 +1,10 @@
 <template>
     <div>
-        <Date-picker type="date" placeholder="日历" style="width: 200px" :options='option' :value='date'></Date-picker>
-        <Date-picker type="daterange" placeholder="日历区间" style="width: 200px" :value='dateRange' ></Date-picker>
-        <Date-picker transfer type="week" placeholder="周历" style="width: 200px" :value='week' :options='option'></Date-picker>
+        <Date-picker type="date" placeholder="日历" style="width: 200px" :options='option'></Date-picker>
+        <Date-picker type="daterange" placeholder="日历区间" style="width: 200px"></Date-picker>
+        <Date-picker transfer type="week" placeholder="周历"  style="width: 200px"  :options='option'></Date-picker>
         <Date-picker type="month" placeholder="月历" style="width: 200px"></Date-picker>
-        <Date-picker transfer type="monthrange" placeholder="月历区间" style="width: 200px" :value='monthRange'></Date-picker>
+        <Date-picker transfer type="monthrange" placeholder="月历区间" style="width: 200px"></Date-picker>
         <Date-picker transfer type="year" placeholder="年历" style="width: 200px"></Date-picker>
     </div>
 </template>
@@ -12,10 +12,10 @@
     export default {
         data(){
             return{
-                date:'2017-08-17',
-                dateRange:['2017-08-01','2017-08-08'],
-                monthRange:['2017-08-01','2017-08-08'],
-                week:'2017-08-07~2017-08-13',
+//                date:'2017-08-17',
+//                dateRange:['2017-08-01','2017-08-08'],
+//                monthRange:['2017-08-01','2017-08-08'],
+//                week:'2017年第一周08-07~08-13',
                 option:{
                     disabledDate(date){
                         return date.valueOf()<(new Date('2017-07-31')).valueOf()||date.valueOf()>(new Date('2017-08-28')).valueOf()
